@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f2ed">
+  <title>خطوة بخطوة | أساسيات إدارة المشاريع</title>
+  <style>
+    /* ألوان الموقع */
+    :root {
+      --color-background: #f7f6f3;
+      --color-surface: #ffffff;
+      --color-beige: #eee9e1;
+      --color-beige-dark: #ddd4c8;
+      --color-earth: #927d68;
+      --color-earth-dark: #75624f;
+      --color-text: #383632;
+      --color-muted: #77736d;
+      --color-border: #e8e5df;
+      --color-success: #55745c;
+      --color-success-bg: #edf4ee;
+      --color-error: #985d53;
+      --color-error-bg: #f8efed;
+      --shadow-soft: 0 8px 26px rgba(49, 43, 35, 0.055);
+      --radius-card: 18px;
+      --content-width: 1080px;
+    }
+
+    /* تنسيق عام */
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 88px;
+    }
+
+    body {
+      margin: 0;
+      background: var(--color-background);
+      color: var(--color-text);
+      font-family: Tahoma, "Segoe UI", Arial, sans-serif;
+      line-height: 1.8;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .container {
+      width: min(var(--content-width), calc(100% - 36px));
+      margin-inline: auto;
+    }
+
+    .section {
+      padding-block: 74px;
+      scroll-margin-top: 82px;
+    }
+
+    .section-heading {
+      max-width: 650px;
+      margin: 0 auto 34px;
+      text-align: center;
+    }
+
+    .section-heading h2 {
+      margin: 0 0 8px;
+      font-size: clamp(1.65rem, 3vw, 2.25rem);
+      line-height: 1.4;
+    }
+
+    .section-heading p,
+    .muted {
+      color: var(--color-muted);
+    }
+
+    .section-heading p {
+      margin: 0;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 10px;
+      color: var(--color-earth-dark);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 10px 20px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      background: var(--color-earth);
+      color: #fff;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      background: var(--color-earth-dark);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    summary:focus-visible {
+      outline: 3px solid #bba78f;
+      outline-offset: 3px;
+    }
+
+    .button-secondary {
+      border-color: var(--color-border);
+      background: var(--color-surface);
+      color: var(--color-text);
+    }
+
+    .button-secondary:hover {
+      background: var(--color-beige);
+      color: var(--color-text);
+    }
+
+    /* شريط التنقل الثابت */
+    .site-header {
+      position: sticky;
+      z-index: 20;
+      top: 0;
+      border-bottom: 1px solid rgba(232, 229, 223, 0.9);
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-wrap {
+      display: flex;
+      min-height: 68px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      flex-shrink: 0;
+      color: var(--color-earth-dark);
+      font-size: 1.05rem;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      overflow-x: auto;
+      padding: 5px 0;
+      scrollbar-width: thin;
+    }
+
+    .nav-links a {
+      flex-shrink: 0;
+      color: var(--color-muted);
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: color 160ms ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--color-earth-dark);
+    }
+
+    /* الواجهة الرئيسية */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding-block: clamp(72px, 12vw, 130px);
+      background:
+        radial-gradient(ellipse at 12% 18%, rgba(221, 212, 200, 0.48), transparent 34%),
+        linear-gradient(135deg, #f8f6f2 0%, #eee9e1 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 740px;
+    }
+
+    .hero h1 {
+      max-width: 700px;
+      margin: 0 0 18px;
+      font-size: clamp(2.2rem, 6vw, 4.1rem);
+      line-height: 1.3;
+      letter-spacing: -0.04em;
+    }
+
+    .hero h1 span {
+      color: var(--color-earth-dark);
+    }
+
+    .hero p {
+      max-width: 620px;
+      margin: 0 0 26px;
+      color: var(--color-muted);
+      font-size: clamp(1rem, 2vw, 1.2rem);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* شريط التقدم */
+    .progress-card {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 12px 20px;
+      margin-top: 28px;
+      padding: 18px 20px;
+      border: 1px solid rgba(221, 212, 200, 0.8);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.76);
+    }
+
+    .progress-label {
+      font-weight: 700;
+    }
+
+    .progress-count {
+      color: var(--color-earth-dark);
+      font-size: 0.92rem;
+      font-weight: 700;
+    }
+
+    .progress-track {
+      grid-column: 1 / -1;
+      height: 10px;
+      overflow: hidden;
+      border-radius: 99px;
+      background: var(--color-beige);
+    }
+
+    .progress-fill {
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--color-earth);
+      transition: width 450ms ease;
+    }
+
+    .progress-details {
+      grid-column: 1 / -1;
+      margin: -5px 0 0;
+      color: var(--color-muted);
+      font-size: 0.84rem;
+    }
+
+    /* البطاقات والدروس */
+    .lessons-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .lesson-card,
+    .tool-card,
+    .tip-card {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-card);
+      background: var(--color-surface);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .lesson-card {
+      overflow: hidden;
+      transition: border-color 180ms ease, transform 180ms ease;
+    }
+
+    .lesson-card[open] {
+      border-color: var(--color-beige-dark);
+    }
+
+    .lesson-card summary {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 20px 22px;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .lesson-card summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .lesson-number {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      flex: 0 0 42px;
+      place-items: center;
+      border-radius: 13px;
+      background: var(--color-beige);
+      color: var(--color-earth-dark);
+      font-weight: 800;
+    }
+
+    .lesson-title {
+      flex: 1;
+      font-size: 1.04rem;
+      font-weight: 800;
+    }
+
+    .lesson-chevron {
+      color: var(--color-earth-dark);
+      transition: transform 180ms ease;
+    }
+
+    .lesson-card[open] .lesson-chevron {
+      transform: rotate(180deg);
+    }
+
+    .lesson-content {
+      padding: 0 22px 24px;
+      animation: reveal 220ms ease;
+    }
+
+    .lesson-content p {
+      margin: 0 0 14px;
+    }
+
+    .example {
+      margin: 14px 0 20px;
+      padding: 14px 16px;
+      border-right: 3px solid var(--color-earth);
+      border-radius: 8px;
+      background: #f8f6f2;
+    }
+
+    .example strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .lesson-complete-row {
+      margin-bottom: 22px;
+    }
+
+    .lesson-done {
+      min-height: 40px;
+      padding: 8px 14px;
+      border: 1px solid var(--color-beige-dark);
+      border-radius: 10px;
+      background: #fff;
+      color: var(--color-earth-dark);
+      font-weight: 700;
+      transition: background 160ms ease;
+    }
+
+    .lesson-done:hover,
+    .lesson-done.is-done {
+      background: var(--color-success-bg);
+      border-color: #cfdfd1;
+      color: var(--color-success);
+    }
+
+    .quiz {
+      padding-top: 16px;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .quiz h3 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+    }
+
+    .quiz-options {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+
+    .quiz-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      padding: 9px 11px;
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: border-color 150ms ease, background 150ms ease;
+    }
+
+    .quiz-option:hover {
+      border-color: var(--color-beige-dark);
+      background: #fbfaf8;
+    }
+
+    .quiz-option input {
+      margin-top: 6px;
+      accent-color: var(--color-earth);
+    }
+
+    .quiz-submit {
+      margin-top: 12px;
+    }
+
+    .quiz-feedback {
+      min-height: 1.8em;
+      margin: 8px 0 0;
+      font-weight: 700;
+    }
+
+    .quiz-feedback.correct {
+      color: var(--color-success);
+    }
+
+    .quiz-feedback.incorrect {
+      color: var(--color-error);
+    }
+
+    /* أدوات التخطيط */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .tool-card {
+      padding: 24px;
+    }
+
+    .tool-card h3 {
+      margin: 0 0 6px;
+      font-size: 1.3rem;
+    }
+
+    .tool-card > p {
+      margin: 0 0 20px;
+      color: var(--color-muted);
+    }
+
+    .form-row {
+      display: flex;
+      align-items: end;
+      gap: 10px;
+    }
+
+    .field {
+      display: grid;
+      flex: 1;
+      gap: 6px;
+    }
+
+    .field label {
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      min-height: 45px;
+      padding: 9px 11px;
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      background: #fff;
+      color: var(--color-text);
+    }
+
+    .field input::placeholder {
+      color: #aaa59d;
+    }
+
+    .form-message {
+      min-height: 1.6em;
+      margin: 8px 0 0;
+      color: var(--color-error);
+      font-size: 0.88rem;
+    }
+
+    .item-list {
+      display: grid;
+      gap: 9px;
+      margin: 18px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .task-item,
+    .budget-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 12px;
+      border: 1px solid var(--color-border);
+      border-radius: 11px;
+      background: #fff;
+    }
+
+    .task-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+      accent-color: var(--color-earth);
+    }
+
+    .task-text {
+      min-width: 0;
+      flex: 1;
+      overflow-wrap: anywhere;
+    }
+
+    .task-item.is-complete .task-text {
+      color: var(--color-muted);
+      text-decoration: line-through;
+    }
+
+    .priority {
+      flex-shrink: 0;
+      padding: 3px 8px;
+      border-radius: 99px;
+      background: var(--color-beige);
+      color: var(--color-earth-dark);
+      font-size: 0.76rem;
+    }
+
+    .priority-high {
+      background: #f5e9e4;
+      color: #835647;
+    }
+
+    .priority-medium {
+      background: #f2eee5;
+      color: #776442;
+    }
+
+    .priority-low {
+      background: #edf1ec;
+      color: #59715b;
+    }
+
+    .icon-button {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      flex: 0 0 34px;
+      place-items: center;
+      border: 1px solid var(--color-border);
+      border-radius: 9px;
+      background: #fff;
+      color: var(--color-muted);
+      transition: background 150ms ease, color 150ms ease;
+    }
+
+    .icon-button:hover {
+      background: var(--color-error-bg);
+      color: var(--color-error);
+    }
+
+    .empty-state {
+      margin: 16px 0 0;
+      padding: 14px;
+      border-radius: 10px;
+      background: #f8f6f2;
+      color: var(--color-muted);
+      text-align: center;
+    }
+
+    .budget-item-name {
+      min-width: 0;
+      flex: 1;
+      overflow-wrap: anywhere;
+    }
+
+    .budget-amount {
+      flex-shrink: 0;
+      font-weight: 700;
+    }
+
+    .budget-total {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 18px;
+      padding-top: 15px;
+      border-top: 1px solid var(--color-border);
+      font-weight: 800;
+    }
+
+    /* نصائح البداية */
+    .tips-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .tip-card {
+      padding: 19px;
+    }
+
+    .tip-icon {
+      display: grid;
+      width: 40px;
+      height: 40px;
+      margin-bottom: 10px;
+      place-items: center;
+      border-radius: 12px;
+      background: var(--color-beige);
+      font-size: 1.2rem;
+    }
+
+    .tip-card p {
+      margin: 0;
+      font-size: 0.92rem;
+    }
+
+    /* الفوتر */
+    .site-footer {
+      padding-block: 26px;
+      border-top: 1px solid var(--color-border);
+      background: #fff;
+      color: var(--color-muted);
+      text-align: center;
+    }
+
+    .site-footer p {
+      margin: 0;
+    }
+
+    .storage-status {
+      position: fixed;
+      z-index: 30;
+      right: 16px;
+      bottom: 16px;
+      max-width: min(380px, calc(100% - 32px));
+      padding: 10px 14px;
+      border: 1px solid #e6c6bf;
+      border-radius: 10px;
+      background: var(--color-error-bg);
+      color: var(--color-error);
+      box-shadow: var(--shadow-soft);
+      font-size: 0.88rem;
+    }
+
+    .storage-status[hidden] {
+      display: none;
+    }
+
+    @keyframes reveal {
+      from {
+        opacity: 0;
+        transform: translateY(-4px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 820px) {
+      .nav-wrap {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 2px;
+        padding-block: 10px;
+      }
+
+      .nav-links {
+        width: 100%;
+        gap: 17px;
+      }
+
+      .tools-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .tips-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 520px) {
+      .container {
+        width: min(var(--content-width), calc(100% - 26px));
+      }
+
+      .section {
+        padding-block: 56px;
+      }
+
+      .hero {
+        padding-block: 68px 54px;
+      }
+
+      .hero h1 {
+        font-size: 2.35rem;
+      }
+
+      .progress-card,
+      .tool-card {
+        padding: 17px;
+      }
+
+      .lesson-card summary {
+        gap: 10px;
+        padding: 16px;
+      }
+
+      .lesson-content {
+        padding: 0 16px 20px;
+      }
+
+      .lesson-title {
+        font-size: 0.94rem;
+      }
+
+      .form-row {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .form-row .button {
+        width: 100%;
+      }
+
+      .tips-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .task-item,
+      .budget-item {
+        gap: 7px;
+        padding: 10px 9px;
+      }
+
+      .priority {
+        font-size: 0.7rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- التنقل الثابت بين أقسام الموقع -->
+  <header class="site-header">
+    <nav class="container nav-wrap" aria-label="القائمة الرئيسية">
+      <a class="brand" href="#home">خطوة بخطوة</a>
+      <div class="nav-links">
+        <a href="#lessons">الدروس</a>
+        <a href="#tools">أدوات التخطيط</a>
+        <a href="#tips">نصائح البداية</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- الواجهة الرئيسية وشريط التقدم العام -->
+    <section class="hero" id="home">
+      <div class="container hero-content">
+        <span class="eyebrow">بداية بسيطة لمشروعكم</span>
+        <h1>فكرتكم تستاهل <span>خطوة أولى.</span></h1>
+        <p>مش لازم تكونوا خبراء عشان تبدأوا. تعلّموا أساسيات إدارة المشاريع بطريقة سهلة، وخطّطوا لمشروعكم خطوة بخطوة كفريق واحد.</p>
+        <div class="hero-actions">
+          <a class="button" href="#lessons">ابدأ التعلم</a>
+          <a class="button button-secondary" href="#tools">خطّط لمشروعك</a>
+        </div>
+
+        <div class="progress-card" aria-label="التقدم في التعلم">
+          <span class="progress-label">تقدمكم في التعلم</span>
+          <span class="progress-count" id="progress-count">٠٪</span>
+          <div
+            class="progress-track"
+            id="progress-track"
+            role="progressbar"
+            aria-label="نسبة إنجاز الدروس والاختبارات"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+          >
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+          <p class="progress-details" id="progress-details">أكملوا درسًا أو اختبارًا عشان يبدأ التقدم بالظهور.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- الدروس التفاعلية والاختبارات القصيرة -->
+    <section class="section" id="lessons">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">ست خطوات عملية</span>
+          <h2>أساسيات إدارة المشاريع</h2>
+          <p>افتحوا كل درس، اقرأوا المثال، وبعدها جرّبوا تجاوبوا على السؤال. كل خطوة بتقرّبكم من بداية منظّمة.</p>
+        </div>
+
+        <div class="lessons-list">
+          <details class="lesson-card" data-lesson="1">
+            <summary>
+              <span class="lesson-number">١</span>
+              <span class="lesson-title">ما هو المشروع وما هي إدارة المشاريع؟</span>
+              <span class="lesson-chevron" aria-hidden="true">⌄</span>
+            </summary>
+            <div class="lesson-content">
+              <p>المشروع هو شغل له هدف واضح وبداية ونهاية، مثل إطلاق متجر صغير. وإدارة المشاريع هي إننا نخطط للشغل ونوزعه ونتابع تقدمه عشان نوصل للهدف من غير لخبطة.</p>
+              <div class="example"><strong>مثال بسيط</strong>لو قررتوا تبيعوا منتجات منزلية، فاختيار المنتجات وتجهيزها وتصويرها وبدء البيع كلها أجزاء من مشروعكم.</div>
+              <div class="lesson-complete-row"><button class="lesson-done" type="button" aria-pressed="false">علّموا الدرس كمكتمل</button></div>
+              <form class="quiz" data-quiz="1">
+                <h3>سؤال سريع: أي وصف أقرب للمشروع؟</h3>
+                <fieldset class="quiz-options">
+                  <legend class="muted">اختاروا إجابة واحدة</legend>
+                  <label class="quiz-option"><input type="radio" name="quiz-1" value="a"> عمل مستمر من غير هدف محدد</label>
+                  <label class="quiz-option"><input type="radio" name="quiz-1" value="b"> جهد له هدف واضح وبداية ونهاية</label>
+                  <label class="quiz-option"><input type="radio" name="quiz-1" value="c"> فكرة من غير أي خطوات تنفيذ</label>
+                </fieldset>
+                <button class="button quiz-submit" type="submit">تحققوا من الإجابة</button>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </form>
+            </div>
+          </details>
+
+          <details class="lesson-card" data-lesson="2">
+            <summary>
+              <span class="lesson-number">٢</span>
+              <span class="lesson-title">تحديد الهدف بطريقة SMART</span>
+              <span class="lesson-chevron" aria-hidden="true">⌄</span>
+            </summary>
+            <div class="lesson-content">
+              <p>الهدف الجيد يكون محددًا، قابلًا للقياس، ممكن التحقيق، مناسبًا لكم، ومحددًا بوقت. طريقة SMART تساعدكم تحوّلوا الأمنية لهدف تعرفوا تتابعوه.</p>
+              <div class="example"><strong>مثال بسيط</strong>بدل «عايزين نبيع كثير»، قولوا: «هنبيع ٣٠ قطعة من منتجاتنا خلال أول شهر من الإطلاق».</div>
+              <div class="lesson-complete-row"><button class="lesson-done" type="button" aria-pressed="false">علّموا الدرس كمكتمل</button></div>
+              <form class="quiz" data-quiz="2">
+                <h3>سؤال سريع: أي هدف أوضح وأسهل في المتابعة؟</h3>
+                <fieldset class="quiz-options">
+                  <legend class="muted">اختاروا إجابة واحدة</legend>
+                  <label class="quiz-option"><input type="radio" name="quiz-2" value="a"> نكبر مشروعنا بأسرع وقت</label>
+                  <label class="quiz-option"><input type="radio" name="quiz-2" value="b"> نحسّن شغلنا يومًا ما</label>
+                  <label class="quiz-option"><input type="radio" name="quiz-2" value="c"> نبيع ٣٠ قطعة خلال الشهر الأول</label>
+                </fieldset>
+                <button class="button quiz-submit" type="submit">تحققوا من الإجابة</button>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </form>
+            </div>
+          </details>
+
+          <details class="lesson-card" data-lesson="3">
+            <summary>
+              <span class="lesson-number">٣</span>
+              <span class="lesson-title">تقسيم العمل إلى مهام</span>
+              <span class="lesson-chevron" aria-hidden="true">⌄</span>
+            </summary>
+            <div class="lesson-content">
+              <p>المشاريع الكبيرة بتصير أسهل لما نقسمها لمهام صغيرة وواضحة. حدّدوا لكل مهمة شخصًا مسؤولًا ونتيجة متوقعة، عشان الكل يعرف دوره.</p>
+              <div class="example"><strong>مثال بسيط</strong>إطلاق المتجر ممكن يتقسم إلى: اختيار المنتجات، حساب التكلفة، تصوير المنتجات، وتجهيز صفحة الطلبات.</div>
+              <div class="lesson-complete-row"><button class="lesson-done" type="button" aria-pressed="false">علّموا الدرس كمكتمل</button></div>
+              <form class="quiz" data-quiz="3">
+                <h3>سؤال سريع: ليه نقسم المشروع لمهام صغيرة؟</h3>
+                <fieldset class="quiz-options">
+                  <legend class="muted">اختاروا إجابة واحدة</legend>
+                  <label class="quiz-option"><input type="radio" name="quiz-3" value="a"> عشان نعرف المطلوب والمسؤول عن كل خطوة</label>
+                  <label class="quiz-option"><input type="radio" name="quiz-3" value="b"> عشان نخلي الشغل أصعب</label>
+                  <label class="quiz-option"><input type="radio" name="quiz-3" value="c"> عشان ما نحتاج نتابع التقدم</label>
+                </fieldset>
+                <button class="button quiz-submit" type="submit">تحققوا من الإجابة</button>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </form>
+            </div>
+          </details>
+
+          <details class="lesson-card" data-lesson="4">
+            <summary>
+              <span class="lesson-number">٤</span>
+              <span class="lesson-title">الجدول الزمني وترتيب الأولويات</span>
+              <span class="lesson-chevron" aria-hidden="true">⌄</span>
+            </summary>
+            <div class="lesson-content">
+              <p>قدّروا الوقت اللازم لكل مهمة، وحددوا موعدًا تقريبيًا لإنجازها. ابدأوا بالمهام المهمة أو التي يعتمد عليها شغل آخر، واتركوا مساحة للتأخير المتوقع.</p>
+              <div class="example"><strong>مثال بسيط</strong>اختيار المنتجات يسبق تصويرها، وتصويرها يسبق نشرها للبيع؛ ترتيب الخطوات يوفر عليكم إعادة الشغل.</div>
+              <div class="lesson-complete-row"><button class="lesson-done" type="button" aria-pressed="false">علّموا الدرس كمكتمل</button></div>
+              <form class="quiz" data-quiz="4">
+                <h3>سؤال سريع: ماذا نعمل قبل تصوير المنتجات؟</h3>
+                <fieldset class="quiz-options">
+                  <legend class="muted">اختاروا إجابة واحدة</legend>
+                  <label class="quiz-option"><input type="radio" name="quiz-4" value="a"> ننشر المنتجات للبيع</label>
+                  <label class="quiz-option"><input type="radio" name="quiz-4" value="b"> نختار المنتجات ونجهزها</label>
+                  <label class="quiz-option"><input type="radio" name="quiz-4" value="c"> نراجع نتائج الشهر الأول</label>
+                </fieldset>
+                <button class="button quiz-submit" type="submit">تحققوا من الإجابة</button>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </form>
+            </div>
+          </details>
+
+          <details class="lesson-card" data-lesson="5">
+            <summary>
+              <span class="lesson-number">٥</span>
+              <span class="lesson-title">الميزانية والتكاليف</span>
+              <span class="lesson-chevron" aria-hidden="true">⌄</span>
+            </summary>
+            <div class="lesson-content">
+              <p>الميزانية تقدير للمبلغ المتاح وما يحتاجه المشروع من مصاريف. اكتبوا البنود حتى الصغيرة منها، وقارنوا المجموع بالمبلغ الذي تستطيعون تخصيصه.</p>
+              <div class="example"><strong>مثال بسيط</strong>لو عندكم تكلفة منتجات وتغليف وتوصيل، سجّلوا كل بند ومبلغه قبل الشراء عشان تكون الصورة واضحة للجميع.</div>
+              <div class="lesson-complete-row"><button class="lesson-done" type="button" aria-pressed="false">علّموا الدرس كمكتمل</button></div>
+              <form class="quiz" data-quiz="5">
+                <h3>سؤال سريع: ما أفضل طريقة لمعرفة تكلفة البداية؟</h3>
+                <fieldset class="quiz-options">
+                  <legend class="muted">اختاروا إجابة واحدة</legend>
+                  <label class="quiz-option"><input type="radio" name="quiz-5" value="a"> نتوقع رقمًا من غير تفاصيل</label>
+                  <label class="quiz-option"><input type="radio" name="quiz-5" value="b"> نشتري كل شيء ثم نحسب</label>
+                  <label class="quiz-option"><input type="radio" name="quiz-5" value="c"> نسجل بنود المصاريف ونجمعها</label>
+                </fieldset>
+                <button class="button quiz-submit" type="submit">تحققوا من الإجابة</button>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </form>
+            </div>
+          </details>
+
+          <details class="lesson-card" data-lesson="6">
+            <summary>
+              <span class="lesson-number">٦</span>
+              <span class="lesson-title">المخاطر وكيف نتعامل معها</span>
+              <span class="lesson-chevron" aria-hidden="true">⌄</span>
+            </summary>
+            <div class="lesson-content">
+              <p>المخاطر أمور ممكن تعطل الخطة، مثل تأخر مورد أو زيادة سعر. فكّروا مسبقًا: ما الذي قد يحدث؟ وما الخطة البديلة؟ مراجعة المخاطر تساعدكم تستعدوا بدل ما تتفاجؤوا.</p>
+              <div class="example"><strong>مثال بسيط</strong>إذا تأخر وصول التغليف، ممكن تتفقوا مع مورد بديل أو تحتفظوا بكمية صغيرة احتياطية.</div>
+              <div class="lesson-complete-row"><button class="lesson-done" type="button" aria-pressed="false">علّموا الدرس كمكتمل</button></div>
+              <form class="quiz" data-quiz="6">
+                <h3>سؤال سريع: ماذا نفعل إذا توقعنا تأخر المورد؟</h3>
+                <fieldset class="quiz-options">
+                  <legend class="muted">اختاروا إجابة واحدة</legend>
+                  <label class="quiz-option"><input type="radio" name="quiz-6" value="a"> نجهز بديلًا أو خطة للتأخير</label>
+                  <label class="quiz-option"><input type="radio" name="quiz-6" value="b"> نتجاهل الاحتمال تمامًا</label>
+                  <label class="quiz-option"><input type="radio" name="quiz-6" value="c"> نوقف المشروع قبل ما يبدأ</label>
+                </fieldset>
+                <button class="button quiz-submit" type="submit">تحققوا من الإجابة</button>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </form>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- قائمة المهام وحاسبة الميزانية -->
+    <section class="section" id="tools">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">حوّلوا الفكرة لخطة</span>
+          <h2>أدوات تخطيط مشروعكم</h2>
+          <p>اكتبوا مهامكم وتكاليفكم هنا. بياناتكم تظل محفوظة على هذا الجهاز.</p>
+        </div>
+
+        <div class="tools-grid">
+          <section class="tool-card" aria-labelledby="tasks-heading">
+            <h3 id="tasks-heading">قائمة المهام</h3>
+            <p>ضيفوا المهام، واختاروا أولويتها، وحددوا ما أنجزتموه.</p>
+            <form id="task-form">
+              <div class="form-row">
+                <div class="field">
+                  <label for="task-input">المهمة</label>
+                  <input id="task-input" name="task" type="text" maxlength="120" placeholder="مثال: البحث عن مورد" required>
+                </div>
+                <div class="field">
+                  <label for="task-priority">الأولوية</label>
+                  <select id="task-priority" name="priority">
+                    <option value="high">عالية</option>
+                    <option value="medium" selected>متوسطة</option>
+                    <option value="low">منخفضة</option>
+                  </select>
+                </div>
+                <button class="button" type="submit">إضافة مهمة</button>
+              </div>
+              <p class="form-message" id="task-message" aria-live="polite"></p>
+            </form>
+            <ul class="item-list" id="task-list" aria-label="مهام المشروع"></ul>
+            <p class="empty-state" id="task-empty">ما في مهام لسه. أضيفوا أول خطوة لمشروعكم.</p>
+          </section>
+
+          <section class="tool-card" aria-labelledby="budget-heading">
+            <h3 id="budget-heading">حاسبة الميزانية</h3>
+            <p>سجلوا المصاريف المتوقعة وشوفوا مجموعها يتحدث تلقائيًا.</p>
+            <form id="budget-form">
+              <div class="form-row">
+                <div class="field">
+                  <label for="budget-name">بند التكلفة</label>
+                  <input id="budget-name" name="name" type="text" maxlength="80" placeholder="مثال: مواد التغليف" required>
+                </div>
+                <div class="field">
+                  <label for="budget-amount">المبلغ</label>
+                  <input id="budget-amount" name="amount" type="number" min="0.01" max="1000000000" step="0.01" inputmode="decimal" placeholder="مثال: ٢٥٠" required>
+                </div>
+                <button class="button" type="submit">إضافة بند</button>
+              </div>
+              <p class="form-message" id="budget-message" aria-live="polite"></p>
+            </form>
+            <ul class="item-list" id="budget-list" aria-label="بنود الميزانية"></ul>
+            <p class="empty-state" id="budget-empty">أضيفوا أول بند تكلفة عشان تحسبوا الميزانية.</p>
+            <div class="budget-total">
+              <span>الإجمالي</span>
+              <output id="budget-total" aria-live="polite">٠</output>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <!-- نصائح مختصرة للمبتدئين -->
+    <section class="section" id="tips">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">خلوها بداية مريحة</span>
+          <h2>نصائح للبداية</h2>
+          <p>مش مطلوب تكون كل التفاصيل جاهزة من أول يوم. ابدأوا ببساطة وتعلموا مع التجربة.</p>
+        </div>
+        <div class="tips-grid">
+          <article class="tip-card"><span class="tip-icon" aria-hidden="true">🎯</span><p>اتفقوا على هدف واحد واضح قبل ما تتوزعوا على أفكار كثيرة.</p></article>
+          <article class="tip-card"><span class="tip-icon" aria-hidden="true">🤝</span><p>تكلموا بصراحة، وحددوا مين مسؤول عن كل مهمة.</p></article>
+          <article class="tip-card"><span class="tip-icon" aria-hidden="true">🪜</span><p>ابدأوا بخطوات صغيرة واختبروا الفكرة قبل التوسع.</p></article>
+          <article class="tip-card"><span class="tip-icon" aria-hidden="true">🧾</span><p>سجلوا المصاريف والقرارات عشان ترجعوا لها بسهولة.</p></article>
+          <article class="tip-card"><span class="tip-icon" aria-hidden="true">🌱</span><p>اعتبروا الأخطاء فرصة للتعلم، وعدّلوا خطتكم عند الحاجة.</p></article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- خاتمة بسيطة للموقع -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>خطوة صغيرة اليوم، ومشروع أقرب بكرة. بالتوفيق لكم جميعًا.</p>
+    </div>
+  </footer>
+
+  <div class="storage-status" id="storage-status" role="status" hidden></div>
+
+  <script>
+    /* حفظ واسترجاع بيانات الموقع */
+    (function () {
+      "use strict";
+
+      const STORAGE_KEY = "project-basics-site-v1";
+      const LESSON_COUNT = 6;
+      const QUIZ_COUNT = 6;
+      const correctAnswers = {
+        1: "b",
+        2: "c",
+        3: "a",
+        4: "b",
+        5: "c",
+        6: "a"
+      };
+      const priorityLabels = {
+        high: "عالية",
+        medium: "متوسطة",
+        low: "منخفضة"
+      };
+      const numberFormatter = new Intl.NumberFormat("ar");
+      const amountFormatter = new Intl.NumberFormat("ar", {
+        maximumFractionDigits: 2
+      });
+
+      const storageStatus = document.getElementById("storage-status");
+      let storageAvailable = true;
+      let data = loadData();
+
+      function showStorageError() {
+        storageAvailable = false;
+        storageStatus.textContent = "تعذر حفظ التغييرات في هذا المتصفح. ستبقى البيانات الحالية حتى إغلاق الصفحة.";
+        storageStatus.hidden = false;
+      }
+
+      function loadData() {
+        const emptyData = { tasks: [], budget: [], completedLessons: [], completedQuizzes: [] };
+        try {
+          const savedValue = window.localStorage.getItem(STORAGE_KEY);
+          if (!savedValue) {
+            return emptyData;
+          }
+
+          const parsed = JSON.parse(savedValue);
+          if (!parsed || typeof parsed !== "object") {
+            return emptyData;
+          }
+
+          return {
+            tasks: Array.isArray(parsed.tasks) ? parsed.tasks.filter(function (task) {
+              return task && typeof task.id === "string" &&
+                typeof task.text === "string" &&
+                Object.prototype.hasOwnProperty.call(priorityLabels, task.priority) &&
+                typeof task.completed === "boolean";
+            }) : [],
+            budget: Array.isArray(parsed.budget) ? parsed.budget.filter(function (item) {
+              return item && typeof item.id === "string" &&
+                typeof item.name === "string" &&
+                typeof item.amount === "number" &&
+                Number.isFinite(item.amount) &&
+                item.amount > 0;
+            }) : [],
+            completedLessons: Array.isArray(parsed.completedLessons)
+              ? parsed.completedLessons.filter(isLessonNumber)
+              : [],
+            completedQuizzes: Array.isArray(parsed.completedQuizzes)
+              ? parsed.completedQuizzes.filter(isLessonNumber)
+              : []
+          };
+        } catch (error) {
+          showStorageError();
+          return emptyData;
+        }
+      }
+
+      function isLessonNumber(value) {
+        return Number.isInteger(value) && value >= 1 && value <= LESSON_COUNT;
+      }
+
+      function saveData() {
+        if (!storageAvailable) {
+          return;
+        }
+        try {
+          window.localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        } catch (error) {
+          showStorageError();
+        }
+      }
+
+      function createId() {
+        if (window.crypto && typeof window.crypto.randomUUID === "function") {
+          return window.crypto.randomUUID();
+        }
+        return Date.now().toString(36) + Math.random().toString(36).slice(2);
+      }
+
+      /* تحديث التقدم بناءً على الدروس المكتملة والاختبارات المجابة */
+      function updateProgress() {
+        const completedCount = data.completedLessons.length + data.completedQuizzes.length;
+        const totalCount = LESSON_COUNT + QUIZ_COUNT;
+        const percentage = Math.round((completedCount / totalCount) * 100);
+        const fill = document.getElementById("progress-fill");
+        const count = document.getElementById("progress-count");
+        const details = document.getElementById("progress-details");
+        const track = document.getElementById("progress-track");
+
+        fill.style.width = percentage + "%";
+        count.textContent = numberFormatter.format(percentage) + "٪";
+        track.setAttribute("aria-valuenow", String(percentage));
+        details.textContent = "أنجزتم " +
+          numberFormatter.format(data.completedLessons.length) + " من " +
+          numberFormatter.format(LESSON_COUNT) + " دروس، وأجبتم عن " +
+          numberFormatter.format(data.completedQuizzes.length) + " من " +
+          numberFormatter.format(QUIZ_COUNT) + " اختبارات.";
+      }
+
+      function renderLessonProgress() {
+        document.querySelectorAll(".lesson-card").forEach(function (card) {
+          const lessonNumber = Number(card.dataset.lesson);
+          const button = card.querySelector(".lesson-done");
+          const isDone = data.completedLessons.includes(lessonNumber);
+          button.classList.toggle("is-done", isDone);
+          button.setAttribute("aria-pressed", String(isDone));
+          button.textContent = isDone ? "تم إنجاز الدرس ✓" : "علّموا الدرس كمكتمل";
+        });
+      }
+
+      document.querySelectorAll(".lesson-card").forEach(function (card) {
+        const lessonNumber = Number(card.dataset.lesson);
+        const doneButton = card.querySelector(".lesson-done");
+        const quizForm = card.querySelector(".quiz");
+
+        doneButton.addEventListener("click", function () {
+          if (data.completedLessons.includes(lessonNumber)) {
+            data.completedLessons = data.completedLessons.filter(function (number) {
+              return number !== lessonNumber;
+            });
+          } else {
+            data.completedLessons.push(lessonNumber);
+          }
+          saveData();
+          renderLessonProgress();
+          updateProgress();
+        });
+
+        quizForm.addEventListener("submit", function (event) {
+          event.preventDefault();
+          const selected = quizForm.querySelector('input[type="radio"]:checked');
+          const feedback = quizForm.querySelector(".quiz-feedback");
+          if (!selected) {
+            feedback.textContent = "اختاروا إجابة أولًا، وبعدها نراجعها سوا.";
+            feedback.className = "quiz-feedback incorrect";
+            return;
+          }
+
+          if (data.completedQuizzes.indexOf(lessonNumber) === -1) {
+            data.completedQuizzes.push(lessonNumber);
+            saveData();
+            updateProgress();
+          }
+
+          if (selected.value === correctAnswers[lessonNumber]) {
+            feedback.textContent = "إجابة صحيحة! ممتاز، أنتم ماشيين بخطوات واثقة. ✨";
+            feedback.className = "quiz-feedback correct";
+          } else {
+            feedback.textContent = "مش مشكلة، جرّبوا مرة ثانية بعد مراجعة الدرس. أنتم تتعلمون!";
+            feedback.className = "quiz-feedback incorrect";
+          }
+        });
+      });
+
+      /* عرض المهام وإضافة مهمة أو إكمالها أو حذفها */
+      const taskForm = document.getElementById("task-form");
+      const taskInput = document.getElementById("task-input");
+      const taskPriority = document.getElementById("task-priority");
+      const taskList = document.getElementById("task-list");
+      const taskEmpty = document.getElementById("task-empty");
+      const taskMessage = document.getElementById("task-message");
+
+      function renderTasks() {
+        taskList.replaceChildren();
+        taskEmpty.hidden = data.tasks.length > 0;
+
+        data.tasks.forEach(function (task) {
+          const item = document.createElement("li");
+          item.className = "task-item" + (task.completed ? " is-complete" : "");
+
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.checked = task.completed;
+          checkbox.setAttribute("aria-label", "تحديد المهمة كمكتملة");
+          checkbox.addEventListener("change", function () {
+            task.completed = checkbox.checked;
+            saveData();
+            renderTasks();
+          });
+
+          const text = document.createElement("span");
+          text.className = "task-text";
+          text.textContent = task.text;
+
+          const priority = document.createElement("span");
+          priority.className = "priority priority-" + task.priority;
+          priority.textContent = priorityLabels[task.priority];
+
+          const remove = document.createElement("button");
+          remove.type = "button";
+          remove.className = "icon-button";
+          remove.textContent = "×";
+          remove.setAttribute("aria-label", "حذف المهمة: " + task.text);
+          remove.addEventListener("click", function () {
+            data.tasks = data.tasks.filter(function (currentTask) {
+              return currentTask.id !== task.id;
+            });
+            saveData();
+            renderTasks();
+          });
+
+          item.append(checkbox, text, priority, remove);
+          taskList.append(item);
+        });
+      }
+
+      taskForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const text = taskInput.value.trim();
+        if (!text) {
+          taskMessage.textContent = "اكتبوا اسم المهمة قبل إضافتها.";
+          taskInput.focus();
+          return;
+        }
+
+        data.tasks.push({
+          id: createId(),
+          text: text,
+          priority: taskPriority.value,
+          completed: false
+        });
+        taskInput.value = "";
+        taskMessage.textContent = "";
+        saveData();
+        renderTasks();
+        taskInput.focus();
+      });
+
+      /* عرض بنود الميزانية وحساب الإجمالي تلقائيًا */
+      const budgetForm = document.getElementById("budget-form");
+      const budgetName = document.getElementById("budget-name");
+      const budgetAmount = document.getElementById("budget-amount");
+      const budgetList = document.getElementById("budget-list");
+      const budgetEmpty = document.getElementById("budget-empty");
+      const budgetMessage = document.getElementById("budget-message");
+      const budgetTotal = document.getElementById("budget-total");
+
+      function renderBudget() {
+        budgetList.replaceChildren();
+        budgetEmpty.hidden = data.budget.length > 0;
+
+        const total = data.budget.reduce(function (sum, item) {
+          return sum + item.amount;
+        }, 0);
+        budgetTotal.textContent = amountFormatter.format(total);
+
+        data.budget.forEach(function (entry) {
+          const item = document.createElement("li");
+          item.className = "budget-item";
+
+          const name = document.createElement("span");
+          name.className = "budget-item-name";
+          name.textContent = entry.name;
+
+          const amount = document.createElement("span");
+          amount.className = "budget-amount";
+          amount.textContent = amountFormatter.format(entry.amount);
+
+          const remove = document.createElement("button");
+          remove.type = "button";
+          remove.className = "icon-button";
+          remove.textContent = "×";
+          remove.setAttribute("aria-label", "حذف بند التكلفة: " + entry.name);
+          remove.addEventListener("click", function () {
+            data.budget = data.budget.filter(function (currentEntry) {
+              return currentEntry.id !== entry.id;
+            });
+            saveData();
+            renderBudget();
+          });
+
+          item.append(name, amount, remove);
+          budgetList.append(item);
+        });
+      }
+
+      budgetForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const name = budgetName.value.trim();
+        const amount = Number(budgetAmount.value);
+
+        if (!name) {
+          budgetMessage.textContent = "اكتبوا اسم بند التكلفة قبل إضافته.";
+          budgetName.focus();
+          return;
+        }
+        if (!Number.isFinite(amount) || amount <= 0 || amount > 1000000000) {
+          budgetMessage.textContent = "أدخلوا مبلغًا أكبر من صفر ولا يتجاوز مليارًا.";
+          budgetAmount.focus();
+          return;
+        }
+
+        data.budget.push({
+          id: createId(),
+          name: name,
+          amount: amount
+        });
+        budgetName.value = "";
+        budgetAmount.value = "";
+        budgetMessage.textContent = "";
+        saveData();
+        renderBudget();
+        budgetName.focus();
+      });
+
+      /* استعادة البيانات المحفوظة عند فتح الصفحة */
+      renderLessonProgress();
+      renderTasks();
+      renderBudget();
+      updateProgress();
+    }());
+  </script>
+</body>
+</html>
